@@ -1,0 +1,16 @@
+import collections
+class Solution:
+    def sortString(self, s: str) -> str:
+        
+        dic, ans, asc = collections.Counter(s), [], True
+        
+        while dic:
+            for c in sorted(dic.keys()) if asc else reversed(sorted(dic.keys())):
+                ans.append(c)
+                dic[c] -= 1
+                if dic[c] == 0:
+                    del dic[c]
+            asc = not asc
+    
+            
+        return ''.join(ans)
