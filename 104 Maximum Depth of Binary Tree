@@ -1,5 +1,5 @@
 class Solution:
-    # DFS two stack, one for TreeNode, the other stores depth
+    # Method1: DFS two stacks, one for TreeNode, the other stores depth
     def maxDepth(self, root: TreeNode) -> int:
         
         maxH = 0
@@ -33,3 +33,5 @@ class Solution:
                 
         
         return maxH
+    # Method2: BFS two queues, one for TreeNode, the other stores depth
+    # Method3: The most elegant, recursion
