@@ -1,0 +1,73 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def deleteNode(self, root, key):
+        """
+        :type root: TreeNode
+        :type key: int
+        :rtype: TreeNode
+        """
+        def is_left_child(parent, child):
+            return parent.left == child
+        def is_right_child(parent, child):
+            return parent.right == child
+        def successor(node):
+            cur_node = node.right
+            while cur_node.left:
+                cur_node = cur_node.left
+            return cur_node.val
+        
+        pre_node = None   
+        node = root
+        
+        while node:
+            if key < node.val:
+                pre_node = node
+                node = node.left
+            elif key > node.val:
+                pre_node = node
+                node = node.right
+            else:   # key == node.val
+                # The root should be deleted
+                if not pre_node:
+                    if not node.left and not node.right:
+                        root = None
+                    elif not node.left:
+                        root = node.right
+                    elif not node.right:
+                        root = node.left
+                    else:
+                        tmp = successor(root)
+                        self.deleteNode(root, tmp)
+                        root.val = tmp
+                else:
+                    # deleted node has no child
+                    if not node.left and not node.right:
+                        if is_left_child(pre_node, node):
+                            pre_node.left = None
+                        if is_right_child(pre_node, node):
+                            pre_node.right = None
+                    # deleted node only has right child
+                    elif not node.left:
+                        if is_left_child(pre_node, node):
+                            pre_node.left = node.right
+                        if is_right_child(pre_node, node):
+                            pre_node.right = node.right
+                    # deleted node only has left child
+                    elif not node.right:
+                        if is_left_child(pre_node, node):
+                            pre_node.left = node.left
+                        if is_right_child(pre_node, node):
+                            pre_node.right = node.left
+                    # deleted node has both children
+                    else:
+                        tmp = successor(node)
+                        self.deleteNode(root, tmp)
+                        node.val = tmp
+                return root
+        return root
+        
